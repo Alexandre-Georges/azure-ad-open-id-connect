@@ -27,9 +27,9 @@ app.get('/', function (expressRequest, expressResponse) {
 
 app.post('/login', function (expressRequest, expressResponse) {
     expressRequest.session.authenticated = true;
-    expressRequest.session.authenticationCode = expressRequest.body.id_token;
+    expressRequest.session.idToken = expressRequest.body.id_token;
 
-    var jwtStrings = expressRequest.session.authenticationCode ? expressRequest.session.authenticationCode.split('.') : '';
+    var jwtStrings = expressRequest.session.idToken ? expressRequest.session.idToken.split('.') : '';
     expressRequest.session.jwt = {
         isSet: jwtStrings.length > 0,
         header: jwtStrings.length > 0 ? JSON.parse(atob(jwtStrings[0])) : '',
@@ -138,7 +138,7 @@ function checkSession(expressRequest, expressResponse, callback) {
 function renderAuthenticated(expressRequest, expressResponse) {
 
     expressResponse.render('authenticated', {
-        authenticationCode: expressRequest.session.authenticationCode,
+        idToken: expressRequest.session.idToken,
         jwt: {
             header: JSON.stringify(expressRequest.session.jwt.header),
             payload: JSON.stringify(expressRequest.session.jwt.payload),
