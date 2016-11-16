@@ -8,7 +8,6 @@ const iam = {
     tenantId: '<AD tenant (in the URL when logged in Azure AD)>',
     hostname: 'login.microsoftonline.com',
     getAuthorizePath: () => { return '/' + iam.tenantId + '/oauth2/authorize'; },
-    getTokenPath: () => { return '/' + iam.tenantId + '/oauth2/token'; },
     getConfigurationPath: () => { return '/' + iam.tenantId + '/v2.0/.well-known/openid-configuration'; }
 };
 
@@ -40,17 +39,6 @@ const config = {
 
     getLoginUrl: () => {
         return 'https://' + iam.hostname + iam.getAuthorizePath() + '?' + loginParameters;
-    },
-
-    getTokenParameters: (code) => {
-        return querystring.stringify({
-            'grant_type': 'authorization_code',
-            'client_id': iam.clientId,
-            'code': code,
-            'client_secret': iam.clientSecret,
-            'redirect_uri': redirectUrl,
-            'resource': iam.clientId
-        });
     },
 
     addAuthenticationKeys: (keys) => {
